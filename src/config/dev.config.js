@@ -1,7 +1,7 @@
 const devConfig = {
 	redditAppId: 'm9C_5XmZ94ULwg',
 	redditAppSecret: 'tsZmxF6DO8qYh34QTtqzUyuh_l0RMw',
-	accessToken: '-5FpKW1M9LRBPxmpa8ITD-xSuPy3lzw',
+	accessToken: '-v6Tk3Wj1xjtVk8n2zOIGvdiL0cUMHQ',
 	refreshToken: '-OQL1rT3JTwPzhHkIMof2aUCpgAxLvQ',
 	baseUrl: 'https://oauth.reddit.com/r/',
 	accessTokenUrl:
