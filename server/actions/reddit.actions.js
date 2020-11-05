@@ -1,7 +1,7 @@
 const Config = require('../config');
 const https = require('https');
 const fetch = require('node-fetch');
-const token = '-fnJmLS00k9U8hW-DcRu5durDFk9eSg';
+const token = '-v6Tk3Wj1xjtVk8n2zOIGvdiL0cUMHQ';
 function getBearerAuthHeader(token) {
 	return {
 		'Content-Type': 'application/json',
