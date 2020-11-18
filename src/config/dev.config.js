@@ -9,7 +9,7 @@ const devConfig = {
 	APOLLO_KEY: {
 		key: 'plz-reddit-ddjkb8:x0JBi9je_qJnK9ne-gNCGw',
 	},
-	ApolloProvider: 'http://localhost:4000/',
+	ApolloProvider: 'http://localhost:4000',
 };
 
 export default devConfig;

@@ -1,7 +1,5 @@
-const Config = require('../config');
-const https = require('https');
 const fetch = require('node-fetch');
-const token = '-zEhM55PBHN40nDsII-UNrn-13dHC9g';
+
 function getBearerAuthHeader(token) {
 	return {
 		'Content-Type': 'application/json',
@@ -15,7 +13,7 @@ function getSubredditComments(arg) {
 		`https://oauth.reddit.com/r/${arg.topic}/comments/${arg.id}?limit=${arg.limit}`,
 		{
 			method: 'GET',
-			headers: getBearerAuthHeader(token),
+			headers: getBearerAuthHeader(arg.token),
 		}
 	)
 		.then((res) => res.json())
@@ -47,7 +45,7 @@ function getSubreddits(arg) {
 		`https://oauth.reddit.com/r/${arg.topic}/${arg.sort}?limit=${arg.limit}&depth=3`,
 		{
 			method: 'GET',
-			headers: getBearerAuthHeader(token),
+			headers: getBearerAuthHeader(arg.token),
 		}
 	)
 		.then((res) => res.json())
