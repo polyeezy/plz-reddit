@@ -1,7 +1,6 @@
-import { useQuery, gql, createHttpLink } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 import ApolloClient from 'apollo-boost';
 import {
-	Card,
 	CardContent,
 	Typography,
 	CircularProgress,
@@ -10,7 +9,6 @@ import {
 	AccordionSummary,
 	Grid,
 } from '@material-ui/core';
-import Snackbar from '@material-ui/core/Snackbar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import MuiAlert from '@material-ui/lab/Alert';
@@ -24,11 +22,11 @@ function Alert(props) {
 }
 
 export function SubredditsComments(props) {
-	const { id, topic } = props;
+	const { id, topic, token } = props;
 
 	const GET_SUBREDDITS_COMMENTS = gql`
 		{
-			getComments(topic: "${topic}", id: "${id}", limit: 3) {
+			getComments(topic: "${topic}", id: "${id}", limit: 3, token: "${token}") {
 				body
 				id
 			}
@@ -36,7 +34,7 @@ export function SubredditsComments(props) {
 	`;
 	const { loading, error, data } = useQuery(GET_SUBREDDITS_COMMENTS, {
 		client,
-		pollInterval: 5000,
+		onCompleted: (data) => {},
 	});
 
 	if (loading) return <CircularProgress className={'subredditscontainer'} />;
@@ -74,7 +72,7 @@ export function SubredditsComments(props) {
 export function Subreddits(props) {
 	const GET_SUBREDDITS = gql`
 		{
-			subreddits(topic: "${props.topic}", sort: "${props.sort}", limit: ${props.limit}) {
+			subreddits(topic: "${props.topic}", sort: "${props.sort}", limit: ${props.limit}, token: "${props.token}") {
 				title
 				id
 				subreddit
@@ -83,9 +81,9 @@ export function Subreddits(props) {
 	`;
 	const { loading, error, data } = useQuery(GET_SUBREDDITS, {
 		client,
-		pollInterval: 5000,
+		onCompleted: (data) => {},
 	});
-
+	const { token } = props;
 	if (loading) return <CircularProgress className={'subredditscontainer'} />;
 	if (error) {
 		return <Alert severity="error">{error.message}</Alert>;
@@ -108,7 +106,11 @@ export function Subreddits(props) {
 				<AccordionDetails>
 					<Grid container>
 						{subreddit && id && (
-							<SubredditsComments topic={subreddit} id={id} />
+							<SubredditsComments
+								token={token}
+								topic={subreddit}
+								id={id}
+							/>
 						)}
 					</Grid>
 				</AccordionDetails>

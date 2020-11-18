@@ -11,11 +11,13 @@ import {
 	Grid,
 } from '@material-ui/core';
 import { Subreddits } from '../graphql/queries';
+import Config from '../config';
 
 export default class Welcome extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			token: null,
 			topic: 'popular',
 			sortValues: ['hot', 'new'],
 			limitValues: [25, 50, 75, 100],
@@ -29,9 +31,38 @@ export default class Welcome extends React.Component {
 		this.setState({ [key]: e.target.value });
 	}
 
-	render() {
-		const { topic, sort, limit, sortValues, limitValues } = this.state;
+	componentDidMount() {
+		this.checkToken();
+	}
 
+	getToken() {
+		return new Promise((resolve, reject) => {
+			fetch(`${Config.ApolloProvider}/token`)
+				.then((res) => res.json())
+				.then((res) => {
+					resolve(res);
+				})
+				.catch(reject);
+		});
+	}
+
+	checkToken() {
+		if (!this.state.token) {
+			this.getToken().then((token) => {
+				this.setState({ token: token.access_token });
+			});
+		}
+	}
+
+	render() {
+		const {
+			topic,
+			sort,
+			limit,
+			sortValues,
+			limitValues,
+			token,
+		} = this.state;
 		return (
 			<Container>
 				<Grid container spacing={5}>
@@ -95,7 +126,12 @@ export default class Welcome extends React.Component {
 						</FormControl>
 					</Grid>
 				</Grid>
-				<Subreddits topic={topic} sort={sort} limit={limit} />
+				<Subreddits
+					token={token}
+					topic={topic}
+					sort={sort}
+					limit={limit}
+				/>
 			</Container>
 		);
 	}
